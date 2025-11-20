@@ -1,4 +1,4 @@
-DROP TABLE "Users" CASCADE;
+--DROP TABLE "Users" CASCADE;
 
 -- Create user table
 CREATE TABLE IF NOT EXISTS "Users" (
@@ -8,5 +8,5 @@ CREATE TABLE IF NOT EXISTS "Users" (
     primary key (id)
 );
 
-
-INSERT INTO "Users" (name, password) VALUES ('admin', 'admin123');
+-- Unique name
+CREATE UNIQUE INDEX IF NOT EXISTS users_name_unique_idx ON "Users"(name);

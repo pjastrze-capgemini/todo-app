@@ -1,17 +1,17 @@
 package com.cap.api;
 
-import jakarta.ws.rs.GET;
+import com.cap.api.dtos.RegisterUserDto;
+import com.cap.api.dtos.UserCredentialsDto;
+import com.cap.domain.user.AuthService;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
-import com.cap.user.UserRepository;
-import jakarta.inject.Inject;
-import com.cap.user.*;
-import java.util.List;
+import jakarta.ws.rs.core.Response;
 
-import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.MediaType;
-
+import java.util.Map;
 
 @Path("/auth")
 @Produces(MediaType.APPLICATION_JSON)
@@ -19,14 +19,23 @@ import jakarta.ws.rs.core.MediaType;
 public class AuthController {
 
     @Inject
-    UserRepository repository;
+    AuthService authService;
 
-    @GET
-    // @Produces(MediaType.TEXT_PLAIN)
-    public List<User> hello() {
-        // var users = repository.findByName("a");
-        var users =  repository.getAll();
-        System.out.println(users);
-        return users;
+    @POST
+    @Path("/login")
+    public Response login(UserCredentialsDto credentials) {
+        var token = authService.authenticate(credentials);
+        return Response.ok(Map.of("token", token)).build();
     }
+
+    @POST
+    @Path("/register")
+    public Response register(RegisterUserDto dto) {
+        authService.registerUser(dto);
+        return Response
+                .ok(Map.of("message", "User created"))
+                .status(Response.Status.CREATED)
+                .build();
+    }
+
 }
