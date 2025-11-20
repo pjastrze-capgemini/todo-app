@@ -9,7 +9,6 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.*;
 
 @QuarkusTest
-//@QuarkusTestResource(PostgreSQLTestResource.class)
 class HealthControllerTest {
 
     @Test

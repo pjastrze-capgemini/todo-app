@@ -1,16 +1,15 @@
 package com.cap.api;
 
 import com.cap.PostgreSQLTestResource;
+import com.cap.TestUtils;
 import com.cap.api.dtos.RegisterUserDto;
-import com.cap.api.dtos.UserCredentialsDto;
 import com.cap.domain.user.AuthService;
 import com.cap.domain.user.UserRepository;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
-import org.junit.jupiter.api.Test;
-
 import jakarta.inject.Inject;
+import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
@@ -28,13 +27,11 @@ class AuthControllerTest {
     @Inject
     AuthService authService;
 
-    String generateRandomLogin() {
-        return "ADMIN_" + Math.random();
-    }
+
 
     @Test
     void shouldRegisterUser() {
-        var login = generateRandomLogin();
+        var login = TestUtils.generateRandomLogin();
         var dto = Map.of(
                 "login", login,
                 "password", "PASS",
@@ -56,7 +53,7 @@ class AuthControllerTest {
 
     @Test
     void shouldRegisterUserInvalidConfirmPassword() {
-        var login = generateRandomLogin();
+        var login = TestUtils.generateRandomLogin();
         var dto = Map.of(
                 "login", login,
                 "password", "PASS",
@@ -73,7 +70,7 @@ class AuthControllerTest {
 
     @Test
     void shouldRegisterUserPreventSameUserLogin() {
-        var login = generateRandomLogin();
+        var login = TestUtils.generateRandomLogin();
         var dto = Map.of(
                 "login", login,
                 "password", "PASS",
@@ -98,7 +95,7 @@ class AuthControllerTest {
 
     @Test
     void shouldLoginUser() {
-        var login = generateRandomLogin();
+        var login = TestUtils.generateRandomLogin();
         var dto = Map.of(
                 "login", login,
                 "password", "PASS"

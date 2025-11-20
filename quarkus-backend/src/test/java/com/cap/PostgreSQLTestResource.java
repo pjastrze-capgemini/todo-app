@@ -15,7 +15,6 @@ public class PostgreSQLTestResource implements QuarkusTestResourceLifecycleManag
 
     @Override
     public Map<String, String> start() {
-
         postgres.start();
         Map<String, String> config = new HashMap<>();
         config.put("quarkus.datasource.jdbc.url", postgres.getJdbcUrl());
