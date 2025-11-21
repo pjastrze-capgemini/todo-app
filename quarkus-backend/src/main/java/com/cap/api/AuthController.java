@@ -2,18 +2,18 @@ package com.cap.api;
 
 import com.cap.api.dtos.RegisterUserDto;
 import com.cap.api.dtos.UserCredentialsDto;
+import com.cap.api.dtos.UserDto;
 import com.cap.domain.user.AuthService;
+import jakarta.annotation.security.PermitAll;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.util.Map;
 
 @Path("/auth")
+@PermitAll
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class AuthController {
@@ -36,6 +36,13 @@ public class AuthController {
                 .ok(Map.of("message", "User created"))
                 .status(Response.Status.CREATED)
                 .build();
+    }
+
+    @GET
+    @Path("/me")
+    public UserDto userInfo() {
+        var user = authService.getAuthUserOrThrow();
+        return UserDto.from(user);
     }
 
 }
