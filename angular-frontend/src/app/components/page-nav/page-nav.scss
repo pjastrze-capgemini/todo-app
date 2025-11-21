@@ -1,0 +1,40 @@
+nav {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    margin: 4px 4px 0;
+    box-sizing: border-box;
+    background-color: rgba(128, 0, 128, 0.205);
+    border: rgb(255, 208, 0) 2px solid;
+    box-shadow: 4px 4px 0px rgb(0, 0, 0);
+    border-radius: 8px;
+
+    .logo {
+        display: flex;
+        gap: 20px;
+        padding: 20px;
+
+        .img {
+            height: 80px;
+            width: 80px;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-image: url("/assets/Peileppe_Konrad_Chibi.png");
+            filter: drop-shadow(-4px 5px 0px rgb(0, 0, 0));
+        }
+
+        p {
+            font-size: 30px;
+            width: 100px;
+            margin: 0;
+        }
+    }
+
+    p-menubar {
+        background: transparent;
+        border: none;
+        font-size: 18px;
+    }
+
+}
