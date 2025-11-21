@@ -27,8 +27,6 @@ class AuthControllerTest {
     @Inject
     AuthService authService;
 
-
-
     @Test
     void shouldRegisterUser() {
         var login = TestUtils.generateRandomLogin();

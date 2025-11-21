@@ -28,6 +28,9 @@ public class AuthService {
         return repository.getByName(identity.getPrincipal().getName());
     }
 
+    public User getAuthUserOrThrow() {
+        return this.getAuthUser().orElseThrow(() -> new NotAuthorizedException("Unauthorized"));
+    }
 
     @ConfigProperty(name = "mp.jwt.verify.issuer")
     String issuer;
@@ -54,7 +57,7 @@ public class AuthService {
     }
 
     @Transactional
-    public void registerUser(RegisterUserDto dto) {
+    public User registerUser(RegisterUserDto dto) {
         if (!dto.password.equals(dto.confirmPassword)) {
             throw new NotAuthorizedException("Passwords do not match.");
         }
@@ -68,6 +71,7 @@ public class AuthService {
         user.name = dto.login;
         user.password = BCrypt.hashpw(dto.password, BCrypt.gensalt());
         repository.create(user);
+        return user;
     }
 
 }

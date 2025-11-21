@@ -2,24 +2,28 @@ package com.cap.api;
 
 import com.cap.PostgreSQLTestResource;
 import com.cap.TestUtils;
+import com.cap.api.dtos.CreateTodoDto;
 import com.cap.api.dtos.RegisterUserDto;
 import com.cap.api.dtos.UserCredentialsDto;
 import com.cap.domain.todo.Todo;
+import com.cap.domain.todo.TodoRepository;
+import com.cap.domain.todo.TodoService;
+import com.cap.domain.todo.TodoStatus;
 import com.cap.domain.user.AuthService;
+import com.cap.domain.user.User;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
-import io.restassured.common.mapper.TypeRef;
 import io.restassured.http.ContentType;
 import io.restassured.http.Header;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
-import org.testcontainers.shaded.org.apache.commons.lang3.NotImplementedException;
 
-import java.util.ArrayList;
+import java.util.AbstractMap;
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @QuarkusTest
 @QuarkusTestResource(PostgreSQLTestResource.class)
@@ -28,16 +32,25 @@ class TodoControllerTest {
     @Inject
     AuthService authService;
 
-    Header authenticate() {
+    @Inject
+    TodoService todoService;
+
+    @Inject
+    TodoRepository todoRepository;
+
+    AbstractMap.SimpleEntry<User, Header> authenticate() {
         var login = TestUtils.generateRandomLogin();
         var dto = Map.of(
                 "login", login,
                 "password", "PASS"
         );
 
-        authService.registerUser(RegisterUserDto.createNew(dto.get("login"), dto.get("password"), dto.get("password")));
+
+        var user = authService.registerUser(RegisterUserDto.createNew(dto.get("login"), dto.get("password"), dto.get("password")));
         var token = authService.authenticate(UserCredentialsDto.createNew(dto.get("login"), dto.get("password")));
-        return new Header("Authorization", "Bearer " + token);
+        var header = new Header("Authorization", "Bearer " + token);
+
+        return new AbstractMap.SimpleEntry<>(user, header);
     }
 
     @Test
@@ -53,27 +66,77 @@ class TodoControllerTest {
     void shouldGetTodosList() {
         var response = given()
                 .contentType(ContentType.JSON)
-                .header(this.authenticate())
+                .header(this.authenticate().getValue())
                 .when()
                 .get("/todos");
 
         response.then().statusCode(200);
-        assertEquals(response.body().asString(), "[]");
+        assertTrue(response.body().asString().contains("["));
     }
 
     @Test
     void shouldCreateTodo() {
-        throw new NotImplementedException("TODO");
+        var auth = this.authenticate();
+        var dto = Map.of(
+                "title", "New Todo",
+                "status", "OPEN"
+        );
+        var newTodo = given()
+                .contentType(ContentType.JSON)
+                .body(dto)
+                .header(auth.getValue())
+                .when().post("/todos")
+                .then()
+                .statusCode(201)
+                .extract()
+                .body()
+                .as(Todo.class);
+
+        var savedTodoOptional = todoRepository.findById(auth.getKey(), newTodo.id);
+        assertTrue(savedTodoOptional.isPresent());
+        var savedTodo = savedTodoOptional.get();
+        assertEquals("New Todo", savedTodo.title);
+        assertEquals(TodoStatus.OPEN, savedTodo.status);
+
     }
 
     @Test
     void shouldUpdateTodo() {
-        throw new NotImplementedException("TODO");
+        var auth = this.authenticate();
+        System.out.println(auth.getKey());
+        var dbTodo = todoService.createTodo(auth.getKey(), CreateTodoDto.createNew("Init", TodoStatus.OPEN));
+        var dto = Map.of(
+                "title", "Updated",
+                "status", "CLOSED"
+        );
+        given()
+                .contentType(ContentType.JSON)
+                .body(dto)
+                .header(auth.getValue())
+                .when().put("/todos/" + dbTodo.id)
+                .then()
+                .statusCode(200);
+
+        var savedTodoOptional = todoRepository.findById(auth.getKey(), dbTodo.id);
+        assertTrue(savedTodoOptional.isPresent());
+        var savedTodo = savedTodoOptional.get();
+        assertEquals("Updated", savedTodo.title);
+        assertEquals(TodoStatus.CLOSED, savedTodo.status);
     }
 
     @Test
     void shouldDeleteTodo() {
-        throw new NotImplementedException("TODO");
+        var auth = this.authenticate();
+        var dbTodo = todoService.createTodo(auth.getKey(), CreateTodoDto.createNew("Init", TodoStatus.OPEN));
+
+        given()
+                .header(auth.getValue())
+                .when().delete("/todos/" + dbTodo.id)
+                .then()
+                .statusCode(200);
+
+        var deletedTodo = todoRepository.findById(auth.getKey(), dbTodo.id);
+        assertTrue(deletedTodo.isEmpty());
     }
 
 }

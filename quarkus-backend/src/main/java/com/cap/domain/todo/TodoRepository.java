@@ -6,7 +6,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotAllowedException;
-import jakarta.ws.rs.NotAuthorizedException;
 
 import java.time.Instant;
 import java.util.List;
@@ -20,6 +19,8 @@ public class TodoRepository {
 
     @Transactional
     public Todo create(User user, Todo todo) {
+        em.merge(user);
+
         todo.owner = user;
         todo.createAt = Instant.now();
         em.persist(todo);
@@ -52,7 +53,7 @@ public class TodoRepository {
         String query = """
                 SELECT t FROM Todo t
                 WHERE LOWER(t.title) LIKE LOWER(:title)
-                AND owner_id = :owner_id
+                AND t.owner.id = :owner_id
                 """;
 
         return em.createQuery(query, Todo.class)
@@ -65,7 +66,7 @@ public class TodoRepository {
         String query = """
                 SELECT t FROM Todo t
                 WHERE t.id = :id
-                AND owner_id = :owner_id
+                AND t.owner.id = :owner_id
                 """;
 
         return em.createQuery(query, Todo.class)

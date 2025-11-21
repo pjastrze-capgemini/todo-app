@@ -2,12 +2,15 @@ package com.cap.domain.todo;
 
 import com.cap.api.dtos.CreateTodoDto;
 import com.cap.domain.user.AuthService;
+import com.cap.domain.user.User;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.NotAuthorizedException;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
 
 import java.util.List;
+
+import static java.util.Optional.of;
 
 @ApplicationScoped
 public class TodoService {
@@ -18,29 +21,27 @@ public class TodoService {
     @Inject
     TodoRepository todoRepository;
 
-    public List<Todo> getUsersTodos() {
-        var user = authService.getAuthUser().orElseThrow(() -> new NotAuthorizedException("Unauthorized"));
+    public List<Todo> getUsersTodos(User user) {
         return todoRepository.getUsersTodos(user);
     }
 
-    public Todo createTodo(CreateTodoDto dto) {
-        var user = authService.getAuthUser().orElseThrow(() -> new NotAuthorizedException("Unauthorized"));
-        var todo = new Todo();
-        todo.title = dto.title;
-        todo.status = dto.status;
-        return todoRepository.create(user, todo);
-    }
-
-    public Todo updateTodo(CreateTodoDto dto) {
-        var user = authService.getAuthUser().orElseThrow(() -> new NotAuthorizedException("Unauthorized"));
-        var todo = todoRepository.findById(user, dto.id).orElseThrow(() -> new NotFoundException("Todo not found"));
-        todo.title = dto.title;
-        todo.status = dto.status;
+    @Transactional
+    public Todo updateTodo(User user, Long todoId, CreateTodoDto dto) {
+        var todo = todoRepository.findById(user, todoId).orElseThrow(() -> new NotFoundException("Todo not found"));
+        todo.title = of(dto.title).orElse(todo.title);
+        todo.status = of(dto.status).orElse(todo.status);
         return todoRepository.update(user, todo);
     }
 
-    public void deleteTodo(Long todoId) {
-        var user = authService.getAuthUser().orElseThrow(() -> new NotAuthorizedException("Unauthorized"));
+    public Todo createTodo(User user, CreateTodoDto dto) {
+        var todo = new Todo();
+        todo.title = of(dto.title).orElse("Not title");
+        todo.status = of(dto.status).orElse(TodoStatus.OPEN);
+        return todoRepository.create(user, todo);
+    }
+
+    @Transactional
+    public void deleteTodo(User user, Long todoId) {
         var todo = todoRepository.findById(user, todoId).orElseThrow(() -> new NotFoundException("Todo not found"));
         todoRepository.delete(user, todo);
     }

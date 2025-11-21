@@ -3,12 +3,15 @@ package com.cap.api;
 import com.cap.api.dtos.CreateTodoDto;
 import com.cap.domain.todo.Todo;
 import com.cap.domain.todo.TodoService;
+import com.cap.domain.user.AuthService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
 import java.util.List;
+import java.util.Map;
 
 @Path("/todos")
 @RolesAllowed("User")
@@ -17,30 +20,41 @@ import java.util.List;
 public class TodoController {
 
     @Inject
+    AuthService authService;
+
+    @Inject
     TodoService todoService;
 
     @GET
     @Path("")
     public List<Todo> getTodos() {
-        return todoService.getUsersTodos();
+        var user = authService.getAuthUserOrThrow();
+        return todoService.getUsersTodos(user);
     }
 
     @POST
     @Path("")
-    public Todo createTodo(CreateTodoDto dto) {
-        return todoService.createTodo(dto);
+    public Response createTodo(CreateTodoDto dto) {
+        var user = authService.getAuthUserOrThrow();
+        var todo = todoService.createTodo(user, dto);
+        return Response.ok(todo).status(Response.Status.CREATED).build();
     }
 
-    @POST
-    @Path("")
-    public Todo updateTodo(CreateTodoDto dto) {
-        return todoService.updateTodo(dto);
+    @PUT
+    @Path("/{todoId}")
+    public Todo updateTodo(@PathParam("todoId") Long todoId, CreateTodoDto dto) {
+        var user = authService.getAuthUserOrThrow();
+        return todoService.updateTodo(user, todoId, dto);
     }
 
     @DELETE
-    @Path("{todoId")
-    public void deleteTodo(Long todoId) {
-        todoService.deleteTodo(todoId);
+    @Path("/{todoId}")
+    public Response deleteTodo(@PathParam("todoId") Long todoId) {
+        var user = authService.getAuthUserOrThrow();
+        todoService.deleteTodo(user, todoId);
+        return Response
+                .ok(Map.of("message", "Response was removed"))
+                .build();
     }
 
 }

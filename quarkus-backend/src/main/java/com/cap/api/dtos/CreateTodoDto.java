@@ -3,7 +3,6 @@ package com.cap.api.dtos;
 import com.cap.domain.todo.TodoStatus;
 
 public class CreateTodoDto {
-    public Long id;
     public String title;
     public TodoStatus status;
 
