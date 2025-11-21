@@ -29,7 +29,7 @@ public class AuthService {
     }
 
     public User getAuthUserOrThrow() {
-        return this.getAuthUser().orElseThrow(() -> new NotAuthorizedException("Unauthorized"));
+        return this.getAuthUser().orElseThrow(() -> new NotAuthorizedException("Unauthorized."));
     }
 
     @ConfigProperty(name = "mp.jwt.verify.issuer")
@@ -41,12 +41,12 @@ public class AuthService {
     public String authenticate(UserCredentialsDto credentials) {
         var user = repository.getByName(credentials.login);
         if (user.isEmpty()) {
-            throw new NotAuthorizedException("Invalid login or password");
+            throw new NotAuthorizedException("Invalid login or password.");
         }
 
         var dbUser = user.get();
         if (!BCrypt.checkpw(credentials.password, dbUser.password)) {
-            throw new NotAuthorizedException("Invalid login or password");
+            throw new NotAuthorizedException("Invalid login or password.");
         }
 
         return Jwt.issuer(issuer)
