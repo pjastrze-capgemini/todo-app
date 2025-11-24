@@ -1,0 +1,32 @@
+:host {
+    flex: 1;
+}
+
+.app-wrapper {
+    height: 100%;
+    flex-direction: row;
+
+    .info-baner {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 20px;
+
+        h1 {
+            font-size: 3rem;
+
+            strong {
+                font-weight: 700;
+                color: var(--theme-color)
+            }
+        }
+
+        .separtator {
+            width: 100px;
+            margin: 20px 0 10px;
+            border-top: 2px solid white;
+        }
+    }
+
+}

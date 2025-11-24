@@ -1,21 +1,22 @@
-nav {
-    --theme-color: rgb(255, 223, 80);
+:host {
+    width: 100%;
+    display: flex;
+}
 
+nav {
     display: flex;
     justify-content: space-between;
     padding: 10px;
-    margin: 4px 4px 0;
     box-sizing: border-box;
-    background-color: rgba(128, 0, 128, 0.205);
-    border: var(--theme-color) 2px solid;
-    box-shadow: 4px 4px 0px rgb(0, 0, 0);
+    // background-color: rgba(128, 0, 128, 0.205);
+    // border: var(--theme-color) 2px solid;
+    // box-shadow: 4px 4px 0px rgb(0, 0, 0);
     border-radius: 8px;
 
     .logo {
         display: flex;
         flex: 1;
         gap: 20px;
-        padding: 20px;
 
         .img {
             height: 80px;
@@ -46,7 +47,7 @@ nav {
             flex: 1;
         }
 
-        &::ng-deep .menubar-item-icon {
+        &::ng-deep .p-menubar-item-icon {
             color: var(--theme-color);
         }
     }
