@@ -36,7 +36,7 @@
                 <label for="user-password-confirm">Confirm password</label>
             </p-floatlabel>
             @if (isInvalid('confirmPassword')) {
-            <p-message styleClass="form-error" severity="error" size="small" variant="simple">Password is
+            <p-message styleClass="form-error" severity="error" size="small" variant="simple">Confirm password is
                 required.</p-message>
             }
         </div>
@@ -47,7 +47,7 @@
 
     <ng-template #footer>
         <div class="card-footer">
-            <span>I have an account. <a routerLink="/login">Login Page</a></span>
+            <span>Already have an account? <a routerLink="/login">Login</a></span>
         </div>
     </ng-template>
 </p-card>
