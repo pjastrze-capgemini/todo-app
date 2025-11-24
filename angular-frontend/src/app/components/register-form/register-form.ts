@@ -6,6 +6,7 @@ import { Button } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
+import { AuthService } from '../../services/auth-service';
 
 @Component({
   selector: 'app-register-form',
@@ -16,7 +17,10 @@ import { InputTextModule } from 'primeng/inputtext';
 export class RegisterForm {
   registerForm!: FormGroup;
 
-  constructor(private fb: FormBuilder) { }
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService
+  ) { }
 
   ngOnInit(): void {
     this.registerForm = this.fb.group({
@@ -31,12 +35,17 @@ export class RegisterForm {
     return control?.invalid && control.touched;
   }
 
-  onRegister(): void {
+  async onRegister(): Promise<void> {
     if (this.registerForm.valid) {
       const { login, password, confirmPassword } = this.registerForm.value;
       console.log('Login:', login);
       console.log('Password:', password);
       console.log('ConfirmPassword:', confirmPassword);
+      await this.authService.register({
+          login: login,
+          password: password,
+          confirmPassword: confirmPassword
+      })
     }
   }
 }

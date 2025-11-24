@@ -6,9 +6,9 @@ import { definePreset } from '@primeuix/themes';
 import Aura from '@primeuix/themes/aura';
 import { providePrimeNG } from 'primeng/config';
 import { routes } from './app.routes';
+import { HttpInterceptorFn, provideHttpClient, withInterceptors } from '@angular/common/http';
 
-const MyPreset = definePreset(Aura, {
-
+const MyTheme = definePreset(Aura, {
   palette: {},
   primitive: {
     borderRadius: {
@@ -28,14 +28,27 @@ const MyPreset = definePreset(Aura, {
 });
 
 
+const authInterceptor: HttpInterceptorFn = (req, next) => {
+  const token = localStorage.getItem('authToken');
+  if (token) {
+    const cloned = req.clone({ setHeaders: { Authorization: `Bearer ${token}` } });
+    return next(cloned);
+  }
+
+  return next(req)
+};
+
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideHttpClient(
+      withInterceptors([authInterceptor])
+    ),
     provideBrowserGlobalErrorListeners(),
     provideAnimations(),
     provideRouter(routes), provideClientHydration(withEventReplay()),
     providePrimeNG({
       theme: {
-        preset: MyPreset,
+        preset: MyTheme,
         options: {
           cssLayer: 'primeng',
         },

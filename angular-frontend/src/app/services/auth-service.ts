@@ -1,0 +1,29 @@
+import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import { AuthApi, RegisterUserDto, UserCredentialsDto, UserDto } from './auth-api';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class AuthService {
+  public readonly user$: BehaviorSubject<UserDto | undefined> = new BehaviorSubject<UserDto | undefined>(undefined);
+  constructor(private authApi: AuthApi) { }
+
+  async login(credentials: UserCredentialsDto) {
+    const { token } = await this.authApi.login(credentials);
+    localStorage.setItem('authToken', token);
+    const user = await this.authApi.getProfile();
+    this.user$.next(user)
+  }
+
+  async logOut() {
+    localStorage.removeItem('authToken');
+    this.user$.next(undefined)
+  }
+
+  async register(credentials: RegisterUserDto) {
+    await this.authApi.register(credentials);
+    await this.login(credentials)
+  }
+
+}
