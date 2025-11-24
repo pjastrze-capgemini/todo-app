@@ -45,7 +45,7 @@ public class AuthService {
         }
 
         var dbUser = user.get();
-        if (!BCrypt.checkpw(credentials.password, dbUser.password)) {
+        if (!PasswordUtil.verifyPassword(credentials.password, dbUser.password)) {
             throw new NotAuthorizedException("Invalid login or password.");
         }
 
@@ -69,7 +69,7 @@ public class AuthService {
 
         var user = new User();
         user.name = dto.login;
-        user.password = BCrypt.hashpw(dto.password, BCrypt.gensalt());
+        user.password = PasswordUtil.hashPassword(dto.password);
         repository.create(user);
         return user;
     }

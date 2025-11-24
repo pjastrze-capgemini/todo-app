@@ -53,7 +53,7 @@ public class TodoController {
         var user = authService.getAuthUserOrThrow();
         todoService.deleteTodo(user, todoId);
         return Response
-                .ok(Map.of("message", "Response was removed"))
+                .ok(Map.of("message", "Todo was removed"))
                 .build();
     }
 
