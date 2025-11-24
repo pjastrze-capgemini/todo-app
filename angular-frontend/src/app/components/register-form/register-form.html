@@ -1,1 +1,53 @@
-<p>register-form works!</p>
+<p-card class="form-card">
+    <ng-template #header>
+    </ng-template>
+    <ng-template #title> Register</ng-template>
+    <ng-template #subtitle> Create new account.</ng-template>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onRegister()" class="v-form">
+        <div class="field">
+            <p-floatlabel variant="in">
+                <input class="full-width" pInputText id="user-login" formControlName="login" autocomplete="off" />
+                <label for="user-login">Login</label>
+
+            </p-floatlabel>
+            @if (isInvalid('login')) {
+            <p-message styleClass="form-error" severity="error" size="small" variant="simple">Login is
+                required.</p-message>
+            }
+        </div>
+
+        <div class="field">
+            <p-floatlabel variant="in">
+                <input class="full-width" pInputText id="user-password" type="password" formControlName="password"
+                    autocomplete="off" />
+                <label for="user-password">Password</label>
+            </p-floatlabel>
+            @if (isInvalid('password')) {
+            <p-message styleClass="form-error" severity="error" size="small" variant="simple">Password is
+                required.</p-message>
+            }
+        </div>
+
+        <div class="field">
+            <p-floatlabel variant="in">
+                <input class="full-width" pInputText id="user-password-confirm" type="password" formControlName="confirmPassword"
+                    autocomplete="off" />
+                <label for="user-password-confirm">Confirm password</label>
+            </p-floatlabel>
+            @if (isInvalid('confirmPassword')) {
+            <p-message styleClass="form-error" severity="error" size="small" variant="simple">Password is
+                required.</p-message>
+            }
+        </div>
+
+        <p-button pButton type="submit" label="Register" styleClass="full-width"
+            [disabled]="registerForm.invalid"></p-button>
+    </form>
+
+    <ng-template #footer>
+        <div class="card-footer">
+            <span>I have an account. <a routerLink="/login">Login Page</a></span>
+        </div>
+    </ng-template>
+</p-card>

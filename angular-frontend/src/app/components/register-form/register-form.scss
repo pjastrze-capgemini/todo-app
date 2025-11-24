@@ -1,0 +1,12 @@
+:host {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    ::ng-deep .p-card-body {
+        border: 2px solid var(--purble-3);
+        border-radius: 10px;
+    }
+}
