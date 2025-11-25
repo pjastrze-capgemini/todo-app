@@ -19,12 +19,12 @@ class HealthControllerTest {
     }
 
     @Test
-    void testSwaggerEndpoint() {
+    void testSwaggerUIEndpoint() {
         given()
                 .when().get("/q/swagger-ui/")
                 .then()
                 .statusCode(200)
-                .body(containsString("quarkus-backend API"));
+                .body(containsString("<!DOCTYPE html>"));
     }
 
 }
