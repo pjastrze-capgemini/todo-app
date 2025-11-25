@@ -47,11 +47,6 @@ export class PageNav {
           routerLink: "/"
         },
         {
-          label: 'About',
-          icon: 'pi pi-star',
-          routerLink: "/about"
-        },
-        {
           label: 'Login',
           icon: 'pi pi-sign-in',
           routerLink: "/login"

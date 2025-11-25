@@ -1,9 +1,8 @@
 import { Routes } from '@angular/router';
-import { LoginPage } from './pages/login-page/login-page';
 import { LoginForm } from './components/login-form/login-form';
 import { RegisterForm } from './components/register-form/register-form';
+import { LoginPage } from './pages/login-page/login-page';
 import { TodosPage } from './pages/todos-page/todos-page';
-import { AboutPage } from './pages/about-page/about-page';
 import { authGuard } from './services/auth.guard';
 
 export const routes: Routes = [
@@ -33,12 +32,8 @@ export const routes: Routes = [
         children: [
             {
                 path: "details/:id",
-                component: AboutPage
+                component: RegisterForm
             },
         ]
-    },
-    {
-        path: 'about',
-        component: AboutPage
     }
 ];
