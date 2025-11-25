@@ -4,6 +4,7 @@ import { LoginForm } from './components/login-form/login-form';
 import { RegisterForm } from './components/register-form/register-form';
 import { TodosPage } from './pages/todos-page/todos-page';
 import { AboutPage } from './pages/about-page/about-page';
+import { authGuard } from './services/auth.guard';
 
 export const routes: Routes = [
     {
@@ -27,7 +28,8 @@ export const routes: Routes = [
     },
         {
         path: 'todos',
-        component: TodosPage
+        component: TodosPage,
+        canActivate: [authGuard],
     },
             {
         path: 'about',

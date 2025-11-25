@@ -13,5 +13,8 @@
     ::ng-deep table {
         border-radius: 10px;
         overflow: hidden;
+        tr, td, th {
+            border-color: var(--purble-1);
+        }
     }
 }

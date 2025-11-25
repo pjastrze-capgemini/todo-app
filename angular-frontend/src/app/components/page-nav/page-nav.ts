@@ -18,15 +18,15 @@ import { AuthService } from '../../services/auth-service';
 export class PageNav {
   userMenuItems: MenuItem[] = [
     {
-      label: "LogOut",
-      icon: 'pi pi-sign-out',
-      command: () => this.authService.logOut()
-    },
-    {
       label: "Todo List",
       icon: 'pi pi-list-check',
       command: () => this.router.navigate(['/todos'])
-    }
+    },
+        {
+      label: "Logout",
+      icon: 'pi pi-sign-out',
+      command: () => this.authService.logOut()
+    },
   ]
   items = signal<MenuItem[]>([]);
   user = signal<UserDto | null>(null);
