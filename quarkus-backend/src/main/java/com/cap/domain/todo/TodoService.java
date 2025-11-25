@@ -10,7 +10,7 @@ import jakarta.ws.rs.NotFoundException;
 
 import java.util.List;
 
-import static java.util.Optional.of;
+import static java.util.Optional.ofNullable;
 
 @ApplicationScoped
 public class TodoService {
@@ -28,15 +28,15 @@ public class TodoService {
     @Transactional
     public Todo updateTodo(User user, Long todoId, CreateTodoDto dto) {
         var todo = todoRepository.findById(user, todoId).orElseThrow(() -> new NotFoundException("Todo not found"));
-        todo.title = of(dto.title).orElse(todo.title);
-        todo.status = of(dto.status).orElse(todo.status);
+        todo.title = ofNullable(dto.title).orElse(todo.title);
+        todo.status = ofNullable(dto.status).orElse(todo.status);
         return todoRepository.update(user, todo);
     }
 
     public Todo createTodo(User user, CreateTodoDto dto) {
         var todo = new Todo();
-        todo.title = of(dto.title).orElse("Not title");
-        todo.status = of(dto.status).orElse(TodoStatus.OPEN);
+        todo.title = ofNullable(dto.title).orElse("Not title");
+        todo.status = ofNullable(dto.status).orElse(TodoStatus.OPEN);
         return todoRepository.create(user, todo);
     }
 

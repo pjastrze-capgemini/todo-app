@@ -62,7 +62,7 @@ public class TodoRepository {
                 .getResultList();
     }
 
-    public Optional<Todo> findById(User user, Long TodoId) {
+    public Optional<Todo> findById(User user, Long todoId) {
         String query = """
                 SELECT t FROM Todo t
                 WHERE t.id = :id
@@ -70,7 +70,7 @@ public class TodoRepository {
                 """;
 
         return em.createQuery(query, Todo.class)
-                .setParameter("id", TodoId)
+                .setParameter("id", todoId)
                 .setParameter("owner_id", user.id)
                 .getResultList()
                 .stream()

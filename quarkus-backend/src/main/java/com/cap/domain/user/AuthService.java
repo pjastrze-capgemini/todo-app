@@ -51,7 +51,7 @@ public class AuthService {
 
         return Jwt.issuer(issuer)
                 .upn(dbUser.name)
-                .expiresIn(300L)
+                .expiresIn(3600L)
                 .groups(Set.of("User"))
                 .sign();
     }

@@ -1,14 +1,14 @@
 package com.cap.api;
 
 import com.cap.api.dtos.CreateTodoDto;
-import com.cap.domain.todo.Todo;
+import com.cap.api.dtos.TodoDto;
 import com.cap.domain.todo.TodoService;
 import com.cap.domain.user.AuthService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
+import org.jboss.resteasy.reactive.ResponseStatus;
 
 import java.util.List;
 import java.util.Map;
@@ -27,34 +27,33 @@ public class TodoController {
 
     @GET
     @Path("")
-    public List<Todo> getTodos() {
+    public List<TodoDto> getTodos() {
         var user = authService.getAuthUserOrThrow();
-        return todoService.getUsersTodos(user);
+        return todoService.getUsersTodos(user).stream().map(TodoDto::from).toList();
     }
 
     @POST
     @Path("")
-    public Response createTodo(CreateTodoDto dto) {
+    @ResponseStatus(201)
+    public TodoDto createTodo(CreateTodoDto dto) {
         var user = authService.getAuthUserOrThrow();
         var todo = todoService.createTodo(user, dto);
-        return Response.ok(todo).status(Response.Status.CREATED).build();
+        return TodoDto.from(todo);
     }
 
     @PUT
     @Path("/{todoId}")
-    public Todo updateTodo(@PathParam("todoId") Long todoId, CreateTodoDto dto) {
+    public TodoDto updateTodo(@PathParam("todoId") Long todoId, CreateTodoDto dto) {
         var user = authService.getAuthUserOrThrow();
-        return todoService.updateTodo(user, todoId, dto);
+        return TodoDto.from(todoService.updateTodo(user, todoId, dto));
     }
 
     @DELETE
     @Path("/{todoId}")
-    public Response deleteTodo(@PathParam("todoId") Long todoId) {
+    public Map<String, String> deleteTodo(@PathParam("todoId") Long todoId) {
         var user = authService.getAuthUserOrThrow();
         todoService.deleteTodo(user, todoId);
-        return Response
-                .ok(Map.of("message", "Todo was removed"))
-                .build();
+        return Map.of("message", "Todo was removed");
     }
 
 }
