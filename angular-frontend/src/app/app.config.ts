@@ -29,6 +29,10 @@ const MyTheme = definePreset(Aura, {
 
 
 const authInterceptor: HttpInterceptorFn = (req, next) => {
+  if (typeof localStorage == "undefined") {
+    return next(req)
+  }
+  
   const token = localStorage.getItem('authToken');
   if (token && !req.url.includes("/auth/login") && !req.url.includes("/auth/register")) {
     const cloned = req.clone({ setHeaders: { Authorization: `Bearer ${token}` } });

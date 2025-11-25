@@ -15,7 +15,6 @@ export class App {
 
   constructor(private auth: AuthService) {
     afterRenderEffect(() => {
-      console.log("init")
       this.auth.init()
     })
   }

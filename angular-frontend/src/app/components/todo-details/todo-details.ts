@@ -1,18 +1,13 @@
-import { afterRenderEffect, Component, OnInit, signal } from '@angular/core';
-import { Dialog } from 'primeng/dialog';
-import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
+import { afterRenderEffect, Component, signal } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AvatarModule } from 'primeng/avatar';
-import { Router } from '@angular/router';
-import { ActivatedRoute } from '@angular/router';
-import { TodoService } from '../../services/todo-service';
+import { ButtonModule } from 'primeng/button';
+import { Dialog } from 'primeng/dialog';
+import { InputTextModule } from 'primeng/inputtext';
 import { TodoDto } from '../../services/todo-api';
+import { TodoService } from '../../services/todo-service';
+import { wait } from '../../utils';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-
-
-function wait(ms: number): Promise<void> {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
 
 
 @Component({
@@ -30,13 +25,11 @@ export class TodoDetails {
     private activeRoute: ActivatedRoute,
     private todoService: TodoService
   ) {
-    afterRenderEffect(() => {
-      this.activeRoute?.paramMap.subscribe(params => {
-        const id = params.get('id');
-        if (id && !Number.isNaN(Number(id))) {
-          this.todoService.getTodo(Number(id)).then(todo => this.todo.set(todo))
-        }
-      })
+    this.activeRoute?.paramMap.pipe(takeUntilDestroyed()).subscribe(params => {
+      const id = params.get('id');
+      if (id && !Number.isNaN(Number(id))) {
+        this.todoService.getTodo(Number(id)).then(todo => this.todo.set(todo))
+      }
     })
   }
 

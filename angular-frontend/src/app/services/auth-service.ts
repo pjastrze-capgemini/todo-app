@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { AuthApi, RegisterUserDto, UserCredentialsDto, UserDto } from './auth-api';
-import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -39,7 +39,6 @@ export class AuthService {
   async logOut() {
     localStorage.removeItem('authToken');
     this.user$.next(undefined)
-    this.router.navigate(['/login']);
   }
 
   async register(credentials: RegisterUserDto) {
@@ -48,7 +47,6 @@ export class AuthService {
   }
 
   async isAuthenticated() {
-    if (typeof localStorage == "undefined") return true;
     await this.init()
     return !!this.user$.getValue()
   }

@@ -25,7 +25,10 @@ export class PageNav {
     {
       label: "Logout",
       icon: 'pi pi-sign-out',
-      command: () => this.authService.logOut()
+      command: () => {
+        this.authService.logOut()
+        this.router.navigate(['/login']);
+      }
     },
   ]
   items = signal<MenuItem[]>([]);
