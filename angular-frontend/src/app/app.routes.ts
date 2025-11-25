@@ -4,6 +4,7 @@ import { RegisterForm } from './components/register-form/register-form';
 import { LoginPage } from './pages/login-page/login-page';
 import { TodosPage } from './pages/todos-page/todos-page';
 import { authGuard } from './services/auth.guard';
+import { TodoDetails } from './components/todo-details/todo-details';
 
 export const routes: Routes = [
     {
@@ -32,7 +33,7 @@ export const routes: Routes = [
         children: [
             {
                 path: "details/:id",
-                component: RegisterForm
+                component: TodoDetails
             },
         ]
     }

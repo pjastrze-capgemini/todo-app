@@ -48,6 +48,7 @@ export class AuthService {
   }
 
   async isAuthenticated() {
+    if (typeof localStorage == "undefined") return true;
     await this.init()
     return !!this.user$.getValue()
   }

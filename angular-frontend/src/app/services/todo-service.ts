@@ -30,6 +30,10 @@ export class TodoService {
     await this.todoApi.createTodo(dto)
     await this.loadTodos()
   }
+  
+  async getTodo(todoId: number): Promise<TodoDto> {
+    return await this.todoApi.getTodo(todoId)
+  }
 
   async deleteTodo(dto: TodoDto) {
     await this.todoApi.deleteTodo(dto.id)

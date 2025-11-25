@@ -1,0 +1,23 @@
+@if(!!todo()) {
+
+<p-dialog (onHide)="backToTodoList()" [(visible)]="visible" [modal]="true"
+    [style]="{ width: '90vw', maxWidth: '500px' }">
+    <ng-template #header>
+        <div class="inline-flex items-center justify-center gap-2">
+            <h3 class="font-bold whitespace-nowrap">{{todo()?.title}}</h3>
+        </div>
+    </ng-template>
+
+    <div class="details-list">
+        <div class="row"> Id: {{todo()?.id}}</div>
+        <div class="row"> Title: {{todo()?.title}}</div>
+        <div class="row"> Owner: {{todo()?.owner?.name}}</div>
+        <div class="row"> Status: {{todo()?.status}}</div>
+    </div>
+
+    <ng-template #footer>
+        <p-button (onClick)="backToTodoList()" label="Close" [outlined]="true" severity="secondary" />
+    </ng-template>
+</p-dialog>
+
+}
