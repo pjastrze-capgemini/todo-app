@@ -1,1 +1,33 @@
-<p>todos-page works!</p>
+<div class="app-wrapper">
+
+    <h1 class="text-4xl font-bold text-center">My Todo List.</h1>
+
+    <div class="card">
+        <p-table [value]="products()" [(selection)]="selectedProducts" dataKey="id"
+            [tableStyle]="{'min-width': '50rem'}">
+            <ng-template #header>
+                <tr>
+                    <th style="width: 4rem"><p-tableHeaderCheckbox /></th>
+                    <th>Id</th>
+                    <th>Title</th>
+                    <th style="text-align: right; width: 300px;">Actions</th>
+                </tr>
+            </ng-template>
+            <ng-template #body let-product>
+                <tr>
+                    <td>
+                        <p-tableCheckbox [value]="product" />
+                    </td>
+                    <td>{{product.id}}</td>
+                    <td>{{product.title}}</td>
+                    <td style="display: flex; gap: 10px; width: 300px; justify-content: flex-end;">
+                        <p-button text severity="danger" label="Delete"></p-button>
+                        <p-button outlined label="Open Details"></p-button>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+
+    <router-outlet></router-outlet>
+</div>

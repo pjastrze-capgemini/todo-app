@@ -1,0 +1,17 @@
+:host {
+    flex: 1;
+}
+
+.app-wrapper {
+    height: 100%;
+    gap: 10px;
+    flex-direction: column;
+
+    --p-datatable-header-cell-background: var(--purble-1);
+    --p-datatable-row-background: var(--purble-2);
+
+    ::ng-deep table {
+        border-radius: 10px;
+        overflow: hidden;
+    }
+}
