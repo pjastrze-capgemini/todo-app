@@ -10,3 +10,13 @@ export const authGuard: CanActivateFn = async () => {
         ? true
         : router.parseUrl('/login');
 };
+
+
+export const loginRouteGuard: CanActivateFn = async () => {
+    const auth = inject(AuthService);
+    const router = inject(Router);
+    return await !auth.isAuthenticated()
+        ? true
+        : router.parseUrl('/todos');
+};
+

@@ -22,7 +22,7 @@ export class PageNav {
       icon: 'pi pi-list-check',
       command: () => this.router.navigate(['/todos'])
     },
-        {
+    {
       label: "Logout",
       icon: 'pi pi-sign-out',
       command: () => this.authService.logOut()
@@ -42,11 +42,6 @@ export class PageNav {
     effect(() => {
       let menu: MenuItem[] = [
         {
-          label: 'Home',
-          icon: 'pi pi-home',
-          routerLink: "/"
-        },
-        {
           label: 'Login',
           icon: 'pi pi-sign-in',
           routerLink: "/login"
@@ -54,12 +49,13 @@ export class PageNav {
       ]
 
       if (!!this.user()) {
-        menu = menu.filter(i => i.label != "Login")
-        menu.splice(1, 0, {
-          label: "Todo List",
-          icon: 'pi pi-list-check',
-          routerLink: "/todos"
-        })
+        menu = [
+          {
+            label: "Todo List",
+            icon: 'pi pi-list-check',
+            routerLink: "/todos"
+          }
+        ]
       }
       this.items.set(menu)
     })
