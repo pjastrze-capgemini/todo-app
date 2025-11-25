@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, signal } from '@angular/core';
+import { afterRenderEffect, AfterViewInit, Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { PageNav } from './components/page-nav/page-nav';
+import { AuthService } from './services/auth-service';
 
 @Component({
   selector: 'app-root',
@@ -11,5 +12,11 @@ import { PageNav } from './components/page-nav/page-nav';
   styleUrl: './app.scss',
 })
 export class App {
-  protected readonly title = signal('angular-frontend');
+
+  constructor(private auth: AuthService) {
+    afterRenderEffect(() => {
+      console.log("init")
+      this.auth.init()
+    })
+  }
 }

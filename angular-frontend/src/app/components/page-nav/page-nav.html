@@ -1,10 +1,21 @@
 <nav class="app-wrapper">
-    <p-menubar autoDisplay="true" [model]="items">
+    <p-menubar autoDisplay="true" [model]="items()">
         <ng-template #start>
             <div class="logo">
                 <div class="img"></div>
                 <p class="honk-600">TODO App</p>
             </div>
         </ng-template>
+
+        <ng-template #end>
+            @if(user()) {
+            <div class="user-card" (click)="menu.toggle($event)">
+                <p-button rounded text icon="pi pi-user" />
+                <p-menu #menu [model]="userMenuItems" [popup]="true" />
+                <span class="font-bold">{{user()?.name}}</span>
+            </div>
+            }
+        </ng-template>
+
     </p-menubar>
 </nav>

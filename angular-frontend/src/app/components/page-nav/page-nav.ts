@@ -1,67 +1,74 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, effect, OnInit, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
+import { AvatarModule } from 'primeng/avatar';
+import { Button } from 'primeng/button';
+import { MenuModule } from 'primeng/menu';
 import { Menubar } from 'primeng/menubar';
+import { UserDto } from '../../services/auth-api';
+import { AuthService } from '../../services/auth-service';
 
 @Component({
   selector: 'app-page-nav',
-  imports: [Menubar],
+  imports: [Menubar, Button, AvatarModule, MenuModule],
   templateUrl: './page-nav.html',
   styleUrl: './page-nav.scss',
 })
-export class PageNav implements OnInit {
-  items: MenuItem[] | undefined;
+export class PageNav {
+  userMenuItems: MenuItem[] = [
+    {
+      label: "LogOut",
+      icon: 'pi pi-sign-out',
+      command: () => this.authService.logOut()
+    },
+    {
+      label: "Todo List",
+      icon: 'pi pi-list-check',
+      command: () => this.router.navigate(['/todos'])
+    }
+  ]
+  items = signal<MenuItem[]>([]);
+  user = signal<UserDto | null>(null);
 
-  ngOnInit() {
-    this.items = [
-      {
-        label: 'Home',
-        icon: 'pi pi-home',
-        routerLink: "/"
-      },
-      {
-        label: 'Login',
-        icon: 'pi pi-star',
-        routerLink: "/login"
-      },
-      {
-        label: 'Todos',
-        icon: 'pi pi-search',
-        routerLink: "/todos",
-        items: [
-          {
-            label: 'Components',
-            icon: 'pi pi-bolt'
-          },
-          {
-            label: 'Blocks',
-            icon: 'pi pi-server'
-          },
-          {
-            label: 'UI Kit',
-            icon: 'pi pi-pencil'
-          },
-          {
-            label: 'Templates',
-            icon: 'pi pi-palette',
-            items: [
-              {
-                label: 'Apollo',
-                icon: 'pi pi-palette'
-              },
-              {
-                label: 'Ultima',
-                icon: 'pi pi-palette'
-              }
-            ]
-          }
-        ],
-      },
-      {
-        label: 'About',
-        icon: 'pi pi-star',
-        routerLink: "/about"
-      },
-    ]
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {
+    this.authService.user$
+      .pipe(takeUntilDestroyed())
+      .subscribe((user) => this.user.set(user ?? null))
+
+    effect(() => {
+      let menu: MenuItem[] = [
+        {
+          label: 'Home',
+          icon: 'pi pi-home',
+          routerLink: "/"
+        },
+        {
+          label: 'About',
+          icon: 'pi pi-star',
+          routerLink: "/about"
+        },
+        {
+          label: 'Login',
+          icon: 'pi pi-sign-in',
+          routerLink: "/login"
+        },
+      ]
+
+      if (!!this.user()) {
+        menu = menu.filter(i => i.label != "Login")
+        menu.splice(1, 0, {
+          label: "Todo List",
+          icon: 'pi pi-list-check',
+          routerLink: "/todos"
+        })
+      }
+      this.items.set(menu)
+    })
   }
 
 }
+

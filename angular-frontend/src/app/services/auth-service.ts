@@ -9,6 +9,18 @@ export class AuthService {
   public readonly user$: BehaviorSubject<UserDto | undefined> = new BehaviorSubject<UserDto | undefined>(undefined);
   constructor(private authApi: AuthApi) { }
 
+  async init() {
+    try {
+      const token = localStorage.getItem('authToken');
+      if (token) {
+        const user = await this.authApi.getProfile();
+        this.user$.next(user)
+      }
+    } catch {
+      this.logOut()
+    }
+  }
+
   async login(credentials: UserCredentialsDto) {
     const { token } = await this.authApi.login(credentials);
     localStorage.setItem('authToken', token);

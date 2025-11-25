@@ -52,4 +52,22 @@ nav {
         }
     }
 
+    .user-card {
+        display: flex;
+        align-items: center;
+        justify-items: center;
+        padding-right: 8px;
+        border: 2px solid var(--purble-3);
+        background-color: var(--purble-1);
+        border-radius: 10px;
+
+        :hover {
+            cursor: pointer;
+        }
+
+        ::ng-deep button:hover {
+            background-color: unset;
+        }
+    }
+
 }
