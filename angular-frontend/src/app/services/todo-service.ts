@@ -30,7 +30,7 @@ export class TodoService {
     await this.todoApi.createTodo(dto)
     await this.loadTodos()
   }
-  
+
   async getTodo(todoId: number): Promise<TodoDto> {
     return await this.todoApi.getTodo(todoId)
   }
@@ -42,10 +42,21 @@ export class TodoService {
 
   async markTodoClosed(todo: TodoDto) {
     await this.todoApi.updateTodo(todo.id, { status: "CLOSED" })
+    this.updateTodoInMemory(todo.id, t => t.status = "CLOSED")
   }
 
   async markTodoOpen(todo: TodoDto) {
     await this.todoApi.updateTodo(todo.id, { status: "OPEN" })
+    this.updateTodoInMemory(todo.id, t => t.status = "OPEN")
+  }
+
+  updateTodoInMemory(todoId: number, fn: (todo: TodoDto) => void) {
+    const allTodos = this.userTodos()
+    const memoryTodo = allTodos.find(t => t.id == todoId);
+    if (memoryTodo) {
+      fn(memoryTodo)
+      this.userTodos.set([...allTodos])
+    }
   }
 
 }
