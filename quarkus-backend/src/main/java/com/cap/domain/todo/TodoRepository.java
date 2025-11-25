@@ -6,6 +6,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotAllowedException;
+import org.jboss.logging.Logger;
 
 import java.time.Instant;
 import java.util.List;
@@ -13,6 +14,8 @@ import java.util.Optional;
 
 @ApplicationScoped
 public class TodoRepository {
+
+    private static final Logger log = Logger.getLogger(TodoRepository.class);
 
     @PersistenceContext
     EntityManager em;
@@ -45,7 +48,8 @@ public class TodoRepository {
     }
 
     public List<Todo> getUsersTodos(User user) {
-        return em.createQuery("SELECT t FROM Todo t ", Todo.class)
+        return em.createQuery("SELECT t FROM Todo t WHERE t.owner.id = :owner_id ORDER BY t.id DESC", Todo.class)
+                .setParameter("owner_id", user.id)
                 .getResultList();
     }
 

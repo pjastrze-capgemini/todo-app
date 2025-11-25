@@ -1,6 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { AuthService } from "./auth-service";
-import { TodoApi, TodoDto } from './todo-api';
+import { CreateTodoDto, TodoApi, TodoDto } from './todo-api';
 
 @Injectable({
   providedIn: 'root',
@@ -17,10 +17,31 @@ export class TodoService {
         this.userTodos.set([]);
         return
       }
-
-      const todos = await this.todoApi.getAll()
-      this.userTodos.set(todos)
+      this.loadTodos()
     })
+  }
+
+  async loadTodos() {
+    const todos = await this.todoApi.getAll()
+    this.userTodos.set(todos)
+  }
+
+  async addTodo(dto: CreateTodoDto) {
+    await this.todoApi.createTodo(dto)
+    await this.loadTodos()
+  }
+
+  async deleteTodo(dto: TodoDto) {
+    await this.todoApi.deleteTodo(dto.id)
+    await this.loadTodos()
+  }
+
+  async markTodoClosed(todo: TodoDto) {
+    await this.todoApi.updateTodo(todo.id, { status: "CLOSED" })
+  }
+
+  async markTodoOpen(todo: TodoDto) {
+    await this.todoApi.updateTodo(todo.id, { status: "OPEN" })
   }
 
 }

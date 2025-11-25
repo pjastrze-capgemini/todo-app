@@ -1,0 +1,17 @@
+<p-card class="form-card">
+    <form [formGroup]="addTodoForm" (ngSubmit)="onAdd()" class="v-form">
+        <div class="field full-width">
+            <p-floatlabel variant="in">
+                <input class="full-width" pInputText id="tood-title" formControlName="title" autocomplete="off" />
+                <label for="tood-title">Title</label>
+
+            </p-floatlabel>
+            @if (isInvalid('title')) {
+            <p-message styleClass="form-error" severity="error" size="small" variant="simple">Todo title is required.</p-message>
+            }
+        </div>
+
+        <p-button styleClass="add-button" pButton type="submit" label="Add Todo"
+            [disabled]="addTodoForm.invalid"></p-button>
+    </form>
+</p-card>

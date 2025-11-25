@@ -8,13 +8,15 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
   public readonly user$: BehaviorSubject<UserDto | undefined> = new BehaviorSubject<UserDto | undefined>(undefined);
-  
+
   constructor(
     private authApi: AuthApi,
     private router: Router
   ) { }
 
   async init() {
+    if (typeof localStorage == "undefined") return;
+
     try {
       const token = localStorage.getItem('authToken');
       if (token) {

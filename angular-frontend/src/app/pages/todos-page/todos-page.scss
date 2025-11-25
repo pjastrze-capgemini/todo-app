@@ -11,10 +11,15 @@
     --p-datatable-row-background: var(--purble-2);
 
     ::ng-deep table {
+        border: 2px solid var(--purble-3);
         border-radius: 10px;
         overflow: hidden;
         tr, td, th {
             border-color: var(--purble-1);
+        }
+
+        .todo-closed {
+            text-decoration: line-through;
         }
     }
 }

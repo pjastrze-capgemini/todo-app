@@ -7,12 +7,13 @@ import { UserDto } from './auth-api';
 export interface TodoDto {
   id: number,
   title: string,
+  status: "OPEN" | "CLOSED",
   owner: UserDto
 }
 
 export interface CreateTodoDto {
-  title: string,
-  status: "OPEN" | "CLOSED"
+  title?: string,
+  status?: "OPEN" | "CLOSED"
 }
 
 @Injectable({
@@ -40,9 +41,9 @@ export class TodoApi {
     )
   }
 
-  createTodo(dto: CreateTodoDto): Promise<TodoDto[]> {
+  createTodo(dto: CreateTodoDto): Promise<TodoDto> {
     return firstValueFrom(
-      this.http.post<TodoDto[]>(`${environment.apiUrl}/todo`, dto)
+      this.http.post<TodoDto>(`${environment.apiUrl}/todo`, dto)
     )
   }
 

@@ -20,18 +20,24 @@ export const routes: Routes = [
                 path: "",
                 component: LoginForm
             },
-               {
+            {
                 path: "create-account",
                 component: RegisterForm
             }
         ]
     },
-        {
+    {
         path: 'todos',
         component: TodosPage,
         canActivate: [authGuard],
-    },
+        children: [
             {
+                path: "details/:id",
+                component: AboutPage
+            },
+        ]
+    },
+    {
         path: 'about',
         component: AboutPage
     }

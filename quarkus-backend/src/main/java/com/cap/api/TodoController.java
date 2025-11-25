@@ -8,6 +8,7 @@ import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import org.jboss.logging.Logger;
 import org.jboss.resteasy.reactive.ResponseStatus;
 
 import java.util.List;
@@ -19,6 +20,8 @@ import java.util.Map;
 @Consumes(MediaType.APPLICATION_JSON)
 public class TodoController {
 
+    private static final Logger log = Logger.getLogger(TodoController.class);
+
     @Inject
     AuthService authService;
 
@@ -29,6 +32,7 @@ public class TodoController {
     @Path("")
     public List<TodoDto> getAllTodos() {
         var user = authService.getAuthUserOrThrow();
+        log.info("GetAll: " + user.id + " " +user.name);
         return todoService.getUsersTodos(user).stream().map(TodoDto::from).toList();
     }
 
