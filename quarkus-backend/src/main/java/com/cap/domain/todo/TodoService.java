@@ -25,6 +25,10 @@ public class TodoService {
         return todoRepository.getUsersTodos(user);
     }
 
+    public Todo getTodo(User user, Long todoId) {
+        return todoRepository.findById(user, todoId).orElseThrow(() -> new NotFoundException("Todo not found"));
+    }
+
     @Transactional
     public Todo updateTodo(User user, Long todoId, CreateTodoDto dto) {
         var todo = todoRepository.findById(user, todoId).orElseThrow(() -> new NotFoundException("Todo not found"));

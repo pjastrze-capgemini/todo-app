@@ -3,6 +3,7 @@ package com.cap.api;
 import com.cap.AuthenticatedTestBase;
 import com.cap.PostgreSQLTestResource;
 import com.cap.api.dtos.CreateTodoDto;
+import com.cap.api.dtos.TodoDto;
 import com.cap.domain.todo.Todo;
 import com.cap.domain.todo.TodoRepository;
 import com.cap.domain.todo.TodoService;
@@ -37,7 +38,7 @@ class TodoControllerTest extends AuthenticatedTestBase {
     void shouldBlockUnauthenticatedUser() {
         given()
                 .contentType(ContentType.JSON)
-                .when().get("/todos")
+                .when().get("/todo")
                 .then()
                 .statusCode(401);
     }
@@ -48,7 +49,7 @@ class TodoControllerTest extends AuthenticatedTestBase {
                 .contentType(ContentType.JSON)
                 .header(this.authenticate().getValue())
                 .when()
-                .get("/todos");
+                .get("/todo");
 
         response.then().statusCode(200);
         assertTrue(response.body().asString().contains("["));
@@ -65,7 +66,7 @@ class TodoControllerTest extends AuthenticatedTestBase {
                 .contentType(ContentType.JSON)
                 .body(dto)
                 .header(auth.getValue())
-                .when().post("/todos")
+                .when().post("/todo")
                 .then()
                 .statusCode(201)
                 .extract()
@@ -81,9 +82,26 @@ class TodoControllerTest extends AuthenticatedTestBase {
     }
 
     @Test
+    void shouldGetTodoById() {
+        var auth = this.authenticate();
+        var dbTodo = todoService.createTodo(auth.getKey(), CreateTodoDto.createNew("Init", TodoStatus.OPEN));
+
+        var todoDto = given()
+                .header(auth.getValue())
+                .when().get("/todo/" + dbTodo.id)
+                .then()
+                .statusCode(200)
+                .extract()
+                .as(TodoDto.class);
+
+        assertEquals(dbTodo.title, todoDto.title);
+        assertEquals(dbTodo.status, todoDto.status);
+        assertEquals(dbTodo.owner.id, todoDto.owner.id);
+    }
+
+    @Test
     void shouldUpdateTodo() {
         var auth = this.authenticate();
-        System.out.println(auth.getKey());
         var dbTodo = todoService.createTodo(auth.getKey(), CreateTodoDto.createNew("Init", TodoStatus.OPEN));
         var dto = Map.of(
                 "title", "Updated",
@@ -93,7 +111,7 @@ class TodoControllerTest extends AuthenticatedTestBase {
                 .contentType(ContentType.JSON)
                 .body(dto)
                 .header(auth.getValue())
-                .when().put("/todos/" + dbTodo.id)
+                .when().put("/todo/" + dbTodo.id)
                 .then()
                 .statusCode(200);
 
@@ -111,7 +129,7 @@ class TodoControllerTest extends AuthenticatedTestBase {
 
         given()
                 .header(auth.getValue())
-                .when().delete("/todos/" + dbTodo.id)
+                .when().delete("/todo/" + dbTodo.id)
                 .then()
                 .statusCode(200);
 

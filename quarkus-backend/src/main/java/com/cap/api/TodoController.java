@@ -13,7 +13,7 @@ import org.jboss.resteasy.reactive.ResponseStatus;
 import java.util.List;
 import java.util.Map;
 
-@Path("/todos")
+@Path("/todo")
 @RolesAllowed("User")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -27,9 +27,16 @@ public class TodoController {
 
     @GET
     @Path("")
-    public List<TodoDto> getTodos() {
+    public List<TodoDto> getAllTodos() {
         var user = authService.getAuthUserOrThrow();
         return todoService.getUsersTodos(user).stream().map(TodoDto::from).toList();
+    }
+
+    @GET
+    @Path("/{todoId}")
+    public TodoDto getTodo(@PathParam("todoId") Long todoId) {
+        var user = authService.getAuthUserOrThrow();
+        return TodoDto.from(todoService.getTodo(user, todoId));
     }
 
     @POST
