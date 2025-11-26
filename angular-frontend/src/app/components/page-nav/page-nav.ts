@@ -49,6 +49,11 @@ export class PageNav {
           icon: 'pi pi-sign-in',
           routerLink: "/login"
         },
+         {
+          label: 'Register',
+          icon: 'pi pi-user',
+          routerLink: "/login/create-account"
+        },
       ]
 
       if (!!this.user()) {
