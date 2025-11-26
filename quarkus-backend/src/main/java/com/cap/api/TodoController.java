@@ -30,9 +30,11 @@ public class TodoController {
 
     @GET
     @Path("")
-    public List<TodoDto> getAllTodos() {
+    public List<TodoDto> getAllTodos(@QueryParam("todoId") Long todoId) {
         var user = authService.getAuthUserOrThrow();
-        log.info("GetAll: " + user.id + " " +user.name);
+        if (todoId != null) {
+            return List.of(this.getTodo(todoId));
+        }
         return todoService.getUsersTodos(user).stream().map(TodoDto::from).toList();
     }
 

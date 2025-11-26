@@ -23,9 +23,14 @@ export class TodoApi {
 
   constructor(private http: HttpClient) { }
 
-  getAll(): Promise<TodoDto[]> {
+  getAll(todoId: string | undefined): Promise<TodoDto[]> {
+    let url = `${environment.apiUrl}/todo`;
+
+    if(Number.isInteger(Number(todoId ?? "-"))) {
+      url = url + "?todoId=" + todoId
+    }
     return firstValueFrom(
-      this.http.get<TodoDto[]>(`${environment.apiUrl}/todo`)
+      this.http.get<TodoDto[]>(url)
     )
   }
 

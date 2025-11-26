@@ -7,9 +7,15 @@
     gap: 10px;
     flex-direction: column;
 
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
     --p-datatable-header-cell-background: var(--purble-1);
     --p-datatable-row-background: var(--purble-2);
-
     ::ng-deep table {
         border: 2px solid var(--purble-3);
         border-radius: 10px;

@@ -1,6 +1,5 @@
-import { afterRenderEffect, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { AuthService } from '../../services/auth-service';
 
 @Component({
   selector: 'app-login-page',
@@ -9,16 +8,5 @@ import { AuthService } from '../../services/auth-service';
   styleUrl: './login-page.scss',
 })
 export class LoginPage {
-
-  // constructor(
-  //   private auth: AuthService,
-  //   private router: Router
-  // ) {
-  //   afterRenderEffect(() => {
-  //     if (await this.auth.isAuthenticated()) {
-
-  //     }
-  //   })
-  // }
 
 }

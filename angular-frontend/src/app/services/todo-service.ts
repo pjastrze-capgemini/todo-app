@@ -21,8 +21,8 @@ export class TodoService {
     })
   }
 
-  async loadTodos() {
-    const todos = await this.todoApi.getAll()
+  async loadTodos(toodId?: string) {
+    const todos = await this.todoApi.getAll(toodId)
     this.userTodos.set(todos)
   }
 
