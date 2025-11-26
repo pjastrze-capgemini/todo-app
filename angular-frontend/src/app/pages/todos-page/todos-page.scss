@@ -31,6 +31,13 @@
             text-decoration: line-through;
         }
 
+        .empty-message {
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
         @media (max-width: 600px) {
             .p-button .p-button-label {
                 display: none;

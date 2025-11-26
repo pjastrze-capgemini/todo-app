@@ -12,10 +12,11 @@ import { InputTextModule } from 'primeng/inputtext';
 import { BehaviorSubject, debounceTime } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MessageService } from 'primeng/api';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-todos-page',
-  imports: [RouterOutlet, TableModule, FormsModule, CommonModule, Button, AddTodoForm, FloatLabelModule, InputTextModule],
+  imports: [RouterOutlet, TableModule, FormsModule, CommonModule, Button, AddTodoForm, FloatLabelModule, InputTextModule, TooltipModule],
   templateUrl: './todos-page.html',
   styleUrl: './todos-page.scss',
 })

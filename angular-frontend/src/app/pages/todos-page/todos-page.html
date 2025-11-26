@@ -3,8 +3,8 @@
     <div class="header">
         <h1 class="text-4xl font-bold text-center">Todo List</h1>
         <p-floatlabel variant="in">
-            <input style="width: 150px;" (input)="searchById.next($event.target.value)" aria-label="Filter by todo id" pInputText id="todo-id" type="text"
-                autocomplete="off" />
+            <input style="width: 150px;" (input)="searchById.next($event.target.value)" aria-label="Filter by todo id"
+                pInputText id="todo-id" type="text" autocomplete="off" />
             <label for="todo-id">Filter by id</label>
         </p-floatlabel>
     </div>
@@ -14,7 +14,7 @@
             [value]="todos()" [(selection)]="selectedTodos" dataKey="id">
             <ng-template #header>
                 <tr>
-                    <th style="width: 5%"></th>
+                    <th style="width: 5%" ><div  pTooltip="Is Complete?">✅</div></th>
                     <th style="width: 10%">Id</th>
                     <th style="width: 30%">Title</th>
                     <th style="text-align: right; width: 30%;">Actions</th>
@@ -35,6 +35,15 @@
                                 severity="danger" icon="pi pi-trash" label="Delete"></p-button>
                             <p-button [ariaLabel]="`Show details of '${item.title}'`" (onClick)="previewTodo(item)" text
                                 icon="pi pi-info-circle" label="Details"></p-button>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template #emptymessage>
+                <tr>
+                    <td colspan="5">
+                        <div class="empty-message">
+                            Todo list is empty. 🚀
                         </div>
                     </td>
                 </tr>
