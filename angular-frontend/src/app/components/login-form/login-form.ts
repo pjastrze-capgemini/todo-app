@@ -43,6 +43,7 @@ export class LoginForm implements OnInit {
         login: login,
         password: password,
       })
+      this.loginForm.reset()
     }
   }
 

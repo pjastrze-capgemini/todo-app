@@ -3,31 +3,31 @@
     <h1 class="text-4xl font-bold text-center">My Todo List.</h1>
 
     <div class="card">
-        <p-table 
-            (onRowSelect)="onRowSelect($event)"
-            (onRowUnselect)="onRowUnselect($event)"
-            [value]="todos()" 
-            [(selection)]="selectedTodos" 
-            dataKey="id"
-            [tableStyle]="{'min-width': '50rem'}">
+        <p-table (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)" [value]="todos()"
+            [(selection)]="selectedTodos" dataKey="id">
             <ng-template #header>
                 <tr>
-                    <th style="width: 4rem"></th>
-                    <th>Id</th>
-                    <th>Title</th>
-                    <th style="text-align: right; width: 300px;">Actions</th>
+                    <th style="width: 5%"></th>
+                    <th style="width: 10%">Id</th>
+                    <th style="width: 30%">Title</th>
+                    <th style="text-align: right; width: 30%;">Actions</th>
                 </tr>
             </ng-template>
             <ng-template #body let-item>
                 <tr>
-                    <td>
+                    <td style="width: 5%">
                         <p-tableCheckbox [value]="item" />
                     </td>
-                    <td>{{item.id}}</td>
-                    <td [ngClass]="{'todo-closed': item.status == 'CLOSED'}">{{item.title}}</td>
-                    <td style="display: flex; gap: 10px; width: 300px; justify-content: flex-end;">
-                        <p-button (onClick)="deleteTodo(item)" text severity="danger" label="Delete"></p-button>
-                        <p-button (onClick)="previewTodo(item)" outlined label="Open Details"></p-button>
+                    <td style="width: 10%">{{item.id}}</td>
+                    <td style="width: 30%" [ngClass]="{'todo-closed': item.status == 'CLOSED'}">{{item.title}}</td>
+                    <td style="width: 30%;">
+                        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+
+                             <p-button rounded text  />
+
+                            <p-button (onClick)="deleteTodo(item)" text severity="danger" icon="pi pi-trash" label="Delete"></p-button>
+                            <p-button (onClick)="previewTodo(item)" text icon="pi pi-info-circle" label="Details"></p-button>
+                        </div>
                     </td>
                 </tr>
             </ng-template>

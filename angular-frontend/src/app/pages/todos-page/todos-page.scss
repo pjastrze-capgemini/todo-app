@@ -14,12 +14,22 @@
         border: 2px solid var(--purble-3);
         border-radius: 10px;
         overflow: hidden;
-        tr, td, th {
+
+        tr,
+        td,
+        th {
             border-color: var(--purble-1);
         }
 
         .todo-closed {
             text-decoration: line-through;
         }
+
+        @media (max-width: 600px) {
+            .p-button .p-button-label {
+                display: none;
+            }
+        }
     }
+
 }

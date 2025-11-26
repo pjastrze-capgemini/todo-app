@@ -6,6 +6,13 @@
     height: 100%;
     flex-direction: row;
 
+    @media screen and (max-width: 900px) {
+        flex-direction: column;
+        gap: 20px;
+        overflow: auto;
+        padding-bottom: 20px;
+    }
+
     .info-baner {
         flex: 1;
         display: flex;

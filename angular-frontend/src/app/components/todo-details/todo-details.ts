@@ -38,4 +38,11 @@ export class TodoDetails {
     await wait(200) // wait for dialog to close
     this.router.navigate(["/todos"])
   }
+
+  async deleteTodo() {
+    if (!!this.todo()) {
+      await this.todoService.deleteTodo(this.todo()!)
+      await this.backToTodoList()
+    }
+  }
 }

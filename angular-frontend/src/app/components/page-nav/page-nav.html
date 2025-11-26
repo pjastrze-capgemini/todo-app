@@ -11,7 +11,7 @@
             @if(user()) {
             <div class="user-card" (click)="menu.toggle($event)">
                 <p-button rounded text icon="pi pi-user" />
-                <p-menu #menu [model]="userMenuItems" [popup]="true" />
+                <p-menu #menu [model]="userMenuItems" appendTo="body" [popup]="true" />
                 <span class="font-bold">{{user()?.name}}</span>
             </div>
             }

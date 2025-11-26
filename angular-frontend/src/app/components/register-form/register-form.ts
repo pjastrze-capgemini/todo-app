@@ -46,6 +46,7 @@ export class RegisterForm {
           password: password,
           confirmPassword: confirmPassword
       })
+      this.registerForm.reset()
     }
   }
 }

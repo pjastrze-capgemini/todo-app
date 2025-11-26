@@ -4,7 +4,7 @@
     [style]="{ width: '90vw', maxWidth: '500px' }">
     <ng-template #header>
         <div class="inline-flex items-center justify-center gap-2">
-            <h3 class="font-bold whitespace-nowrap">{{todo()?.title}}</h3>
+            <h3 class="font-bold whitespace-nowrap">Todo Details: {{todo()?.title}}</h3>
         </div>
     </ng-template>
 
@@ -16,7 +16,8 @@
     </div>
 
     <ng-template #footer>
-        <p-button (onClick)="backToTodoList()" label="Close" [outlined]="true" severity="secondary" />
+        <p-button (onClick)="deleteTodo()" label="Delete" icon="pi pi-trash" text severity="danger" />
+        <p-button (onClick)="backToTodoList()" label="Close" severity="primary" />
     </ng-template>
 </p-dialog>
 
