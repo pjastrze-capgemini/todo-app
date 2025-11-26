@@ -7,6 +7,7 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { TodoService } from '../../services/todo-service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-add-todo-form',
@@ -19,7 +20,8 @@ export class AddTodoForm {
 
   constructor(
     private fb: FormBuilder,
-    private todoService: TodoService
+    private todoService: TodoService,
+    private messageService: MessageService
   ) { }
 
   ngOnInit(): void {
@@ -34,10 +36,13 @@ export class AddTodoForm {
   }
 
   async onAdd(): Promise<void> {
-    if (this.addTodoForm.valid) {
-      const { title } = this.addTodoForm.value;
-      console.log('title:', title);
+    if (!this.addTodoForm.valid) return;
+    const { title } = this.addTodoForm.value;
+    try {
       await this.todoService.addTodo({ title })
+    } catch (e) {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong!', life: 3000 });
+    } finally {
       this.addTodoForm.reset()
     }
   }

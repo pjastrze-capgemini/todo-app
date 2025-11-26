@@ -7,6 +7,7 @@ import { CardModule } from 'primeng/card';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { AuthService } from '../../services/auth-service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-login-form',
@@ -19,7 +20,8 @@ export class LoginForm implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private messageService: MessageService
   ) { }
 
   ngOnInit(): void {
@@ -35,14 +37,16 @@ export class LoginForm implements OnInit {
   }
 
   async onLogin(): Promise<void> {
-    if (this.loginForm.valid) {
-      const { login, password } = this.loginForm.value;
-      console.log('Login:', login);
-      console.log('Password:', password);
+    if (!this.loginForm.valid) return;
+    const { login, password } = this.loginForm.value;
+    try {
       await this.authService.login({
         login: login,
         password: password,
       })
+    } catch (e) {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Invalid login or Password', life: 3000 });
+    } finally {
       this.loginForm.reset()
     }
   }

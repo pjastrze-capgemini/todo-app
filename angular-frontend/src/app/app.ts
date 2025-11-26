@@ -3,11 +3,13 @@ import { afterRenderEffect, AfterViewInit, Component, signal } from '@angular/co
 import { RouterOutlet } from '@angular/router';
 import { PageNav } from './components/page-nav/page-nav';
 import { AuthService } from './services/auth-service';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, PageNav, CommonModule],
-  providers: [],
+  imports: [RouterOutlet, PageNav, CommonModule, ToastModule],
+  providers: [MessageService],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
