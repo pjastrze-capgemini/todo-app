@@ -13,19 +13,22 @@ body {
     --purble-1: #350136;
 }
 
-body, html {
+body,
+html {
     height: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #fff;
 }
 
-#app-root, #page-root {
+#app-root,
+#page-root {
     display: flex;
     flex-direction: column;
     overflow: auto;
     margin: 0;
     height: 100%;
-    color: #fff;
     background: linear-gradient(-15deg, var(--purble-3), #000000);
-    font-family: Arial, Helvetica, sans-serif;
+
 }
 
 .orbitron-500 {
