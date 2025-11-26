@@ -20,7 +20,7 @@ export class PageNav {
     {
       label: "Todo List",
       icon: 'pi pi-list-check',
-      command: () => this.router.navigate(['/todos'])
+      command: () => this.router.navigate(['/todos']),
     },
     {
       label: "Logout",

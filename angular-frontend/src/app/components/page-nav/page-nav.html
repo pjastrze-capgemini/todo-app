@@ -1,5 +1,5 @@
 <nav class="app-wrapper">
-    <p-menubar autoDisplay="true" [model]="items()">
+    <p-menubar [autoDisplay]="true" [model]="items()">
         <ng-template #start>
             <div class="logo">
                 <div class="img"></div>
@@ -11,7 +11,7 @@
             @if(user()) {
             <div class="user-card" (click)="menu.toggle($event)">
                 <p-button rounded text icon="pi pi-user" />
-                <p-menu #menu [model]="userMenuItems" appendTo="body" [popup]="true" />
+                <p-menu ariaLabel="Open user menu" #menu [model]="userMenuItems" appendTo="body" [popup]="true" />
                 <span class="font-bold">{{user()?.name}}</span>
             </div>
             }

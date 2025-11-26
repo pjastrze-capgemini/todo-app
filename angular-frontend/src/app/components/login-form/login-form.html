@@ -4,13 +4,11 @@
     <ng-template #title> Login</ng-template>
     <ng-template #subtitle> Provide your account credentials.</ng-template>
 
-    <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="v-form">
+    <form aria-label="Login Form" [formGroup]="loginForm" (ngSubmit)="onLogin()" class="v-form">
         <div class="field">
             <p-floatlabel variant="in">
-                <input class="full-width" pInputText id="user-login" formControlName="login" autocomplete="off" />
-
+                <input aria-label="Login" class="full-width" pInputText id="user-login" formControlName="login" autocomplete="off" />
                 <label for="user-login">Login</label>
-
             </p-floatlabel>
             @if (isInvalid('login')) {
             <p-message styleClass="form-error" severity="error" size="small" variant="simple">Login is
@@ -20,7 +18,7 @@
 
         <div class="field">
             <p-floatlabel variant="in">
-                <input class="full-width" pInputText id="user-password" type="password" formControlName="password"
+                <input aria-label="Password" class="full-width" pInputText id="user-password" type="password" formControlName="password"
                     autocomplete="off" />
                 <label for="user-password">Password</label>
             </p-floatlabel>
@@ -35,7 +33,7 @@
 
     <ng-template #footer>
         <div class="card-footer">
-            <span>Don't have an account? <a routerLink="/login/create-account">Create one</a></span>
+            <span>Don't have an account? <a aria-label="Create new Account" routerLink="/login/create-account">Create one</a></span>
         </div>
     </ng-template>
 </p-card>

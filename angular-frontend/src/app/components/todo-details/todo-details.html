@@ -16,8 +16,8 @@
     </div>
 
     <ng-template #footer>
-        <p-button (onClick)="deleteTodo()" label="Delete" icon="pi pi-trash" text severity="danger" />
-        <p-button (onClick)="backToTodoList()" label="Close" severity="primary" />
+        <p-button [ariaLabel]="`Delete ${todo()?.title} todo`"  (onClick)="deleteTodo()" label="Delete" icon="pi pi-trash" text severity="danger" />
+        <p-button ariaLabel="Close todo details" (onClick)="backToTodoList()" label="Close" severity="primary" />
     </ng-template>
 </p-dialog>
 

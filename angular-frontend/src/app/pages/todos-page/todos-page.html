@@ -3,7 +3,7 @@
     <h1 class="text-4xl font-bold text-center">My Todo List.</h1>
 
     <div class="card">
-        <p-table (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)" [value]="todos()"
+        <p-table aria-label="List of Todos" (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)" [value]="todos()"
             [(selection)]="selectedTodos" dataKey="id">
             <ng-template #header>
                 <tr>
@@ -16,17 +16,16 @@
             <ng-template #body let-item>
                 <tr>
                     <td style="width: 5%">
-                        <p-tableCheckbox [value]="item" />
+                        <p-tableCheckbox [ariaLabel]="item.status == 'CLOSED' ? `Mark '${item.title}' todo as Open` : `Mark '${item.title}' todo as Closed`" [value]="item" />
                     </td>
                     <td style="width: 10%">{{item.id}}</td>
                     <td style="width: 30%" [ngClass]="{'todo-closed': item.status == 'CLOSED'}">{{item.title}}</td>
                     <td style="width: 30%;">
                         <div style="display: flex; gap: 10px; justify-content: flex-end;">
-
-                             <p-button rounded text  />
-
-                            <p-button (onClick)="deleteTodo(item)" text severity="danger" icon="pi pi-trash" label="Delete"></p-button>
-                            <p-button (onClick)="previewTodo(item)" text icon="pi pi-info-circle" label="Details"></p-button>
+                            <p-button [ariaLabel]="`Delete '${item.title}' todo`" (onClick)="deleteTodo(item)" text
+                                severity="danger" icon="pi pi-trash" label="Delete"></p-button>
+                            <p-button [ariaLabel]="`Show details of '${item.title}'`" (onClick)="previewTodo(item)" text icon="pi pi-info-circle"
+                                label="Details"></p-button>
                         </div>
                     </td>
                 </tr>
